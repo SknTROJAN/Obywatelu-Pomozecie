@@ -1,0 +1,31 @@
+# Godot metadata i cache importu
+.godot/
+*.translation
+
+# Mono / C# build output
+.mono/
+bin/
+obj/
+*.tmp
+
+# Visual Studio / VS Code / JetBrains Rider
+.vs/
+.vscode/
+# !.vscode/tasks.json
+# !.vscode/launch.json
+# !.vscode/settings.json
+.idea/
+*.sln.dotsettings.user
+*.user
+*.suo
+
+# Systemowe & archiwa
+Thumbs.db
+.DS_Store
+*.log
+*.bak
+
+# Backend / konfiguracje lokalne (np. klucze API)
+appsettings.Local.json
+appsettings.Development.json
+.env
