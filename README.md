@@ -1,6 +1,6 @@
 # Obywatelu, pomożecie? 🕵️‍♂️ (Projekt Cyberiada 2026–2027)
 
-Psychologiczny thriller detektywistyczny w realiach PRL.
+Psychologiczny thriller detektywistyczny w realiach PRL..
 
 
 
