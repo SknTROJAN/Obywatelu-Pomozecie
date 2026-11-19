@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokój Przesłuchań MO (1984) – Silnik BDI</title>
+    <style>
+        :root {
+            --bg-main: #0f1013;
+            --bg-card: #181a20;
+            --bg-card-secondary: #21242d;
+            --border-color: #2e3340;
+            --text-main: #e0e3eb;
+            --text-muted: #8b92a5;
+            --accent-orange: #d35400;
+            --accent-red: #c0392b;
+            --accent-purple: #8e44ad;
+            --accent-blue: #2980b9;
+            --accent-green: #27ae60;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stamp-badge {
+            background: rgba(192, 57, 43, 0.2);
+            color: #e74c3c;
+            border: 1px solid #c0392b;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* LEWA KOLUMNA: TECZKA PODEJRZANEGO */
+        .dossier-panel {
+            width: 440px;
+            background-color: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 16px;
+            gap: 14px;
+        }
+
+        .dossier-header {
+            background: var(--bg-card-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        .mo-header-tag {
+            color: #e67e22;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .suspect-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .suspect-sub {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .section-box {
+            background: var(--bg-card-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .evidence-box {
+            border-left: 3px solid var(--accent-purple);
+        }
+
+        .evidence-box .section-title {
+            color: #a29bfe;
+        }
+
+        .evidence-select {
+            width: 100%;
+            background: #14161c;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin-top: 4px;
+            outline: none;
+        }
+
+        .bdi-box {
+            border-left: 3px solid #e67e22;
+        }
+
+        .bdi-box .section-title {
+            color: #f39c12;
+        }
+
+        .bdi-stat {
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+
+        .bdi-stat span {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .bdi-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 6px;
+        }
+
+        .bdi-tag {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            color: #bdc3c7;
+        }
+
+        details {
+            background: var(--bg-card-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 12px;
+        }
+
+        details summary {
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            outline: none;
+            user-select: none;
+        }
+
+        details p, details ul {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        details ul {
+            padding-left: 18px;
+        }
+
+        /* PRAWA KOLUMNA: CZAT PRZESŁUCHAŃ */
+        .chat-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-main);
+        }
+
+        .chat-history {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            font-family: "Courier New", Courier, monospace;
+        }
+
+        .turn-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 2px solid #34495e;
+            padding: 10px 14px;
+            border-radius: 0 4px 4px 0;
+            line-height: 1.5;
+        }
+
+        .turn-card.narrative {
+            border-left: 2px solid #7f8c8d;
+            color: #95a5a6;
+            font-style: italic;
+        }
+
+        .turn-card.player {
+            border-left: 3px solid var(--accent-blue);
+            background: rgba(41, 128, 185, 0.05);
+        }
+
+        .turn-card.player .speaker {
+            color: #5dade2;
+            font-weight: bold;
+        }
+
+        .turn-card.suspect {
+            border-left: 3px solid #e67e22;
+            background: rgba(230, 126, 34, 0.05);
+        }
+
+        .turn-card.suspect .speaker {
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        .turn-card.suspect .visual-cue {
+            color: #bdc3c7;
+            font-style: italic;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .turn-card.error {
+            border-left: 3px solid var(--accent-red);
+            background: rgba(192, 57, 43, 0.1);
+            color: #e74c3c;
+        }
+
+        .status-footer-bar {
+            background: #14161c;
+            border-top: 1px solid var(--border-color);
+            padding: 8px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            align-items: center;
+        }
+
+        .status-badge {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 8px;
+            border-radius: 3px;
+            border: 1px solid var(--border-color);
+        }
+
+        .status-badge strong {
+            color: var(--text-main);
+        }
+
+        /* FORMULARZ WPISYWANIA */
+        .input-bar {
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+        }
+
+        .input-bar textarea {
+            flex: 1;
+            background: #101217;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 10px 14px;
+            color: #fff;
+            font-size: 0.92rem;
+            resize: none;
+            height: 52px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .input-bar textarea:focus {
+            border-color: #3498db;
+        }
+
+        .btn-send {
+            background: #d35400;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 0 24px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-send:hover:not(:disabled) {
+            background: #e67e22;
+        }
+
+        .btn-send:disabled {
+            background: #555;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-reset {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0 14px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .btn-reset:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">
+            <span>Pokój Przesłuchań MO (1984 r.)</span>
+            <span class="stamp-badge">ŚCIŚLE TAJNY AI SLOPIK TEGO TYPU</span>
+        </div>
+        <div>
+            <button class="btn-reset" onclick="resetInterrogation()">↺ Resetuj podejrzanego</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+
+        <!-- LEWY PANEL: TECZKA PODEJRZANEGO -->
+        <aside class="dossier-panel">
+            <div class="dossier-header">
+                <div class="mo-header-tag">KOMENDA REJONOWA MO – AKTA ŚLEDCZE</div>
+                <div class="suspect-name" id="suspectName">Ładowanie akt...</div>
+                <div class="suspect-sub" id="suspectMeta">...</div>
+            </div>
+
+            <!-- DOWÓD NA BIURKU -->
+            <div class="section-box evidence-box">
+                <div class="section-title">
+                    <span>📁 Dowód położony na biurku śledczego:</span>
+                </div>
+                <select id="evidenceSelect" class="evidence-select" onchange="onEvidenceChanged()">
+                    <option value="military_cross">Krzyż Walecznych z 1945 r. (military_cross)</option>
+                    <option value="bloody_knife">Zakrwawiony scyzoryk ze skarpy (bloody_knife)</option>
+                    <option value="none">-- Puste biurko (brak wyłożonego dowodu) --</option>
+                </select>
+                <div style="font-size: 0.72rem; color: #a29bfe; margin-top: 6px;">
+                    * Przedmiot fizycznie leży przed oczami podejrzanego na stole.
+                </div>
+            </div>
+
+            <!-- STAN MENTALNY BDI -->
+            <div class="section-box bdi-box">
+                <div class="section-title">🧠 Stan BDI (Regulator Rozmyty)</div>
+                <div class="bdi-stat">Zamiar (Intention): <span id="bdiIntention">-</span></div>
+                <div class="bdi-stat">Zaufanie: <span id="bdiTrust">-</span></div>
+                <div class="bdi-stat" style="margin-top: 6px; font-size: 0.75rem; color: var(--text-muted);">Przekonania w pamięci (Beliefs):</div>
+                <div class="bdi-tags" id="bdiBeliefs"></div>
+            </div>
+
+            <!-- AKORDEONY ZE SZCZEGÓŁAMI -->
+            <details open>
+                <summary>Rysopis i stan fizyczny</summary>
+                <p id="suspectDesc">-</p>
+            </details>
+
+            <details>
+                <summary>Przeszłość bojowa (1944–1945)</summary>
+                <p id="suspectMilitary">-</p>
+            </details>
+
+            <details>
+                <summary>Rejestr karny i notatki MO</summary>
+                <p id="suspectPolice">-</p>
+            </details>
+
+            <details open>
+                <summary>Słabości i notatki dzielnicowego</summary>
+                <div style="font-size: 0.8rem; margin-top: 6px; color: #e74c3c;">Znane wady / nałogi:</div>
+                <ul id="suspectVices"></ul>
+                <div style="font-size: 0.8rem; margin-top: 8px; color: #f39c12;">Notatka z zatrzymania:</div>
+                <p id="suspectNotes">-</p>
+            </details>
+        </aside>
+
+        <!-- PRAWY PANEL: DIALOGI I PROTOKÓŁ -->
+        <main class="chat-panel">
+            <div class="chat-history" id="chatHistory">
+                <!-- Wpisy dodawane dynamicznie -->
+            </div>
+
+            <div class="status-footer-bar">
+                <div class="status-badge">Czas: <strong id="responseTime">0.00 s</strong></div>
+                <div class="status-badge">Podejście gracza: <strong id="playerApproachTag">-</strong></div>
+                <div class="status-badge">Reakcja Edwarda: <strong id="suspectReactionTag">-</strong></div>
+                <div class="status-badge">Próba łapówki: <strong id="bribeTag">nie</strong></div>
+                <div class="status-badge">Zmiana BDI: <strong id="bdiShiftTag">-</strong></div>
+            </div>
+
+            <div class="input-bar">
+                <textarea 
+                    id="playerInput" 
+                    placeholder="Wpisz kwestię śledczego... (Wciśnij Enter, aby wysłać)"
+                    onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); sendTurn(); }"></textarea>
+                <button class="btn-send" id="btnSend" onclick="sendTurn()">Przesłuchaj</button>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        let currentContext = null;
+
+        async function init() {
+            try {
+                const response = await fetch('/api/interrogation/initial-context');
+                if (!response.ok) throw new Error(`Błąd serwera: ${response.status}`);
+                currentContext = await response.json();
+                renderDossier();
+                renderInitialTurns();
+            } catch (err) {
+                console.error("Błąd ładowania kontekstu:", err);
+                appendCard('error', `BŁĄD POŁĄCZENIA Z API: ${err.message}. Upewnij się, że backend jest uruchomiony na porcie 5043.`);
+            }
+        }
+
+        function renderDossier() {
+            if (!currentContext) return;
+            document.getElementById('suspectName').innerText = `${currentContext.suspect_name} ${currentContext.suspect_surname} ps. „${currentContext.suspect_alias}”`;
+            document.getElementById('suspectMeta').innerText = `Wiek: ${currentContext.suspect_age} l. | ${currentContext.suspect_social_status}`;
+            document.getElementById('suspectDesc').innerText = currentContext.suspect_description;
+            document.getElementById('suspectMilitary').innerText = currentContext.suspect_military_record;
+            document.getElementById('suspectPolice').innerText = currentContext.suspect_police_record;
+            document.getElementById('suspectNotes').innerText = currentContext.suspect_interrogation_notes;
+
+            // Wady
+            const vicesList = document.getElementById('suspectVices');
+            vicesList.innerHTML = '';
+            (currentContext.suspect_known_vices || []).forEach(v => {
+                const li = document.createElement('li');
+                li.innerText = v;
+                vicesList.appendChild(li);
+            });
+
+            updateBdiUI();
+
+            // Ustawienie dowodu w selektorze
+            const sel = document.getElementById('evidenceSelect');
+            if (!currentContext.evidence_on_desk) {
+                sel.value = 'none';
+            } else if (currentContext.evidence_on_desk.item_id === 'military_cross') {
+                sel.value = 'military_cross';
+            } else {
+                sel.value = 'bloody_knife';
+            }
+        }
+
+        function updateBdiUI() {
+            if (!currentContext || !currentContext.bdi_state) return;
+            document.getElementById('bdiIntention').innerText = currentContext.bdi_state.active_intention || 'brak';
+            document.getElementById('bdiTrust').innerText = `${currentContext.bdi_state.trust_tier} (Receptivity: ${currentContext.bdi_state.fuzzy_receptivity})`;
+
+            const beliefsContainer = document.getElementById('bdiBeliefs');
+            beliefsContainer.innerHTML = '';
+            (currentContext.bdi_state.beliefs || []).forEach(b => {
+                const span = document.createElement('span');
+                span.className = 'bdi-tag';
+                span.innerText = b;
+                beliefsContainer.appendChild(span);
+            });
+        }
+
+        function renderInitialTurns() {
+            const history = document.getElementById('chatHistory');
+            history.innerHTML = '';
+
+            appendCard('narrative', '[Edward siedzi skulony przy starym drewnianym stole w pokoju przesłuchań MO, nerwowo ściskając połę brudnej kufajki.]');
+            appendCard('narrative', '[AKTA SPRAWY: Dotychczasowy przebieg przesłuchania z protokołu]:');
+
+            if (currentContext.recent_turns) {
+                currentContext.recent_turns.forEach(t => {
+                    appendCard('player', `<span class="speaker">[Śledczy]:</span> ${escapeHtml(t.player)}`);
+                    appendCard('suspect', `<span class="speaker">Edward:</span> "${escapeHtml(t.suspect)}"`);
+                });
+            }
+
+            appendCard('narrative', '------------------------------------------------------------');
+            scrollBottom();
+        }
+
+        function onEvidenceChanged() {
+            const val = document.getElementById('evidenceSelect').value;
+            if (val === 'military_cross') {
+                currentContext.evidence_on_desk = {
+                    item_id: 'military_cross',
+                    description: 'Krzyż Walecznych z 1945 r., wojenny medalion Edwarda'
+                };
+            } else if (val === 'bloody_knife') {
+                currentContext.evidence_on_desk = {
+                    item_id: 'bloody_knife',
+                    description: 'Zakrwawiony nóż ze skarpy kolejowej'
+                };
+            } else {
+                currentContext.evidence_on_desk = null;
+            }
+        }
+
+        async function sendTurn() {
+            const input = document.getElementById('playerInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const btn = document.getElementById('btnSend');
+            btn.disabled = true;
+            input.value = '';
+
+            // Wyświetl kwestię śledczego
+            appendCard('player', `<span class="speaker">[Śledczy]:</span> ${escapeHtml(text)}`);
+            const thinkingCard = appendCard('narrative', '[Edward myśli...]');
+            scrollBottom();
+
+            // Upewnij się, że aktualny dowód z selektora jest w kontekście
+            onEvidenceChanged();
+
+            try {
+                const res = await fetch('/api/interrogation/turn', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        playerInput: text,
+                        context: currentContext
+                    })
+                });
+
+                thinkingCard.remove();
+
+                if (!res.ok) {
+                    const errorJson = await res.json().catch(() => null);
+                    throw new Error(errorJson?.error || `Błąd serwera (${res.status})`);
+                }
+
+                const data = await res.json();
+                const suspect = data.suspectResponse;
+
+                // Odpowiedź podejrzanego
+                let suspectHtml = '';
+                if (suspect.visual_cue) {
+                    suspectHtml += `<span class="visual-cue">[Mowa ciała: ${escapeHtml(suspect.visual_cue)}]</span>`;
+                }
+                suspectHtml += `<span class="speaker">Edward:</span> "${escapeHtml(suspect.dialogue_text)}"`;
+                appendCard('suspect', suspectHtml);
+
+                // Zaktualizuj stan lokalny
+                currentContext = data.updatedContext;
+                updateBdiUI();
+
+                // Pasek analizy semantycznej
+                document.getElementById('responseTime').innerText = `${data.responseTimeSeconds?.toFixed(2) || '0.00'} s`;
+                if (suspect.semantic_analysis) {
+                    document.getElementById('playerApproachTag').innerText = suspect.semantic_analysis.player_approach || '-';
+                    document.getElementById('suspectReactionTag').innerText = suspect.semantic_analysis.suspect_reaction || '-';
+                    document.getElementById('bribeTag').innerText = suspect.semantic_analysis.bribe_attempt_detected ? 'TAK!' : 'nie';
+                    document.getElementById('bdiShiftTag').innerText = suspect.semantic_analysis.bdi_intention_shift || '-';
+                }
+
+            } catch (err) {
+                if (thinkingCard) thinkingCard.remove();
+                appendCard('error', `[BŁĄD PRZESŁUCHANIA]: ${err.message}`);
+            } finally {
+                btn.disabled = false;
+                scrollBottom();
+                input.focus();
+            }
+        }
+
+        async function resetInterrogation() {
+            if (!confirm('Czy na pewno chcesz zresetować przesłuchanie do stanu początkowego?')) return;
+            await init();
+        }
+
+        function appendCard(type, innerHtml) {
+            const history = document.getElementById('chatHistory');
+            const card = document.createElement('div');
+            card.className = `turn-card ${type}`;
+            card.innerHTML = innerHtml;
+            history.appendChild(card);
+            return card;
+        }
+
+        function scrollBottom() {
+            const h = document.getElementById('chatHistory');
+            h.scrollTop = h.scrollHeight;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
