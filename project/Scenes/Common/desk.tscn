@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://c42b2d6sxypr0"]
+
+[ext_resource type="Texture2D" uid="uid://ckajnd7vslqa" path="res://Assets/wood.jpg" id="1_yal4d"]
+
+[node name="Desk" type="Node2D" unique_id=277228725]
+
+[node name="Wall" type="Sprite2D" parent="." unique_id=1792821416]
+position = Vector2(960, 540)
+texture = ExtResource("1_yal4d")
