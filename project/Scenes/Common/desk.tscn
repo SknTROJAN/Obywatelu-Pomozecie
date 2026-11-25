@@ -1,9 +1,56 @@
 [gd_scene format=3 uid="uid://c42b2d6sxypr0"]
 
-[ext_resource type="Texture2D" uid="uid://ckajnd7vslqa" path="res://Assets/wood.jpg" id="1_yal4d"]
+[ext_resource type="Texture2D" uid="uid://b6pesuaq36r17" path="res://Assets/wall_center.jpg" id="1_n08v1"]
+[ext_resource type="Texture2D" uid="uid://bbr44kf3vtty1" path="res://Assets/floor.jpg" id="1_sqfc8"]
+[ext_resource type="Texture2D" uid="uid://b826upswbivdu" path="res://Assets/wall_left.jpg" id="2_gjjq2"]
+[ext_resource type="Texture2D" uid="uid://dvbd4b4qlbolb" path="res://Assets/desk.png" id="2_rcw3e"]
+[ext_resource type="Texture2D" uid="uid://bnk0n3f6jk27d" path="res://Assets/wall_right.jpg" id="3_n08v1"]
+[ext_resource type="Texture2D" uid="uid://c18sapulwe8k2" path="res://Assets/chair.png" id="5_or844"]
 
 [node name="Desk" type="Node2D" unique_id=277228725]
 
-[node name="Wall" type="Sprite2D" parent="." unique_id=1792821416]
-position = Vector2(960, 540)
-texture = ExtResource("1_yal4d")
+[node name="Enviorment" type="Node2D" parent="." unique_id=1216092812]
+
+[node name="Floor" type="Polygon2D" parent="Enviorment" unique_id=1259174205]
+position = Vector2(-823, 481.99997)
+scale = Vector2(0.8694195, 0.8694196)
+texture = ExtResource("1_sqfc8")
+polygon = PackedVector2Array(0, 0, 0, 896, 4800, 896, 4800, 0)
+uv = PackedVector2Array(0, 0, 0, 896, 4800, 896, 4800, 0)
+
+[node name="LeftWall" type="Polygon2D" parent="Enviorment" unique_id=1815629356]
+position = Vector2(-851.32104, -145.77113)
+scale = Vector2(0.45069802, 0.45069805)
+texture = ExtResource("2_gjjq2")
+polygon = PackedVector2Array(976.9757, 547.531, 999.21, 2462.3386, 2752.0002, 1536.0001, 2751.9998, 0)
+uv = PackedVector2Array(-8, -8, 8, 1527.9998, 2752.0002, 1536.0001, 2751.9998, 0)
+
+[node name="RightWall" type="Polygon2D" parent="Enviorment" unique_id=102417413]
+position = Vector2(1181, -477)
+scale = Vector2(0.45069802, 0.45069805)
+antialiased = true
+texture = ExtResource("3_n08v1")
+polygon = PackedVector2Array(945.20044, 752.16656, 951.8567, 2278.6875, 2613.7231, 3226.107, 2607.067, 1238.0795)
+uv = PackedVector2Array(-8, -8, 8, 1527.9998, 2752.0002, 1536.0001, 2751.9998, 0)
+
+[node name="CenterWall" type="Polygon2D" parent="Enviorment" unique_id=182546471]
+position = Vector2(371, -142)
+scale = Vector2(0.45052075, 0.45052084)
+texture = ExtResource("1_n08v1")
+polygon = PackedVector2Array(0, 0, 0, 1536, 2752, 1536, 2744.0002, 8)
+uv = PackedVector2Array(0, 0, 0, 1536, 2752, 1536, 2744.0002, 8)
+
+[node name="Furniture" type="Node2D" parent="." unique_id=566916615]
+
+[node name="Chair" type="Sprite2D" parent="Furniture" unique_id=394410453]
+position = Vector2(998, 827.99994)
+scale = Vector2(0.409091, 0.40909103)
+texture = ExtResource("5_or844")
+
+[node name="Desk" type="Sprite2D" parent="Furniture" unique_id=1774764728]
+position = Vector2(963.00006, 873)
+scale = Vector2(0.5664062, 0.56640625)
+texture = ExtResource("2_rcw3e")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=193541911]
+position = Vector2(978, 543)
